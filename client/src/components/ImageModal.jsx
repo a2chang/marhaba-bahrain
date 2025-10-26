@@ -1,8 +1,28 @@
 import { useEffect, useState } from 'react'
 import './ImageModal.css'
 
-function ImageModal({ imageUrl, fabricInfo, currentUser, myRating, myNotes, otherUser, otherRating, otherNotes, onClose }) {
+function ImageModal({
+  imageUrl,
+  fabric,
+  fabricInfo,
+  currentUser,
+  myRating,
+  myNotes,
+  otherUser,
+  otherRating,
+  otherNotes,
+  onRatingChange,
+  onNotesChange,
+  onNotesBlur,
+  onNotesFocus,
+  onClose
+}) {
   const [zoomMode, setZoomMode] = useState('fit') // 'fit', '1x', '2x'
+  const [localNotes, setLocalNotes] = useState(myNotes)
+
+  useEffect(() => {
+    setLocalNotes(myNotes)
+  }, [myNotes])
 
   useEffect(() => {
     const handleEscape = (e) => {
@@ -53,6 +73,20 @@ function ImageModal({ imageUrl, fabricInfo, currentUser, myRating, myNotes, othe
     cycleZoom()
   }
 
+  const handleLocalNotesChange = (e) => {
+    const newNotes = e.target.value
+    setLocalNotes(newNotes)
+    onNotesChange(newNotes)
+  }
+
+  const handleLocalNotesFocus = () => {
+    onNotesFocus()
+  }
+
+  const handleLocalNotesBlur = () => {
+    onNotesBlur()
+  }
+
   return (
     <div className="image-modal-backdrop" onClick={handleBackdropClick}>
       <div className="image-modal-content">
@@ -76,18 +110,34 @@ function ImageModal({ imageUrl, fabricInfo, currentUser, myRating, myNotes, othe
             {fabricInfo}
           </div>
           <div className="image-modal-ratings">
-            <div className="modal-rating-section">
+            {/* Current User - Editable */}
+            <div className="modal-rating-section editable">
               <div className="modal-rating-header">
-                <strong>{currentUser === 'andre' ? 'André' : 'Aly'}</strong>
-                <span
-                  className="modal-rating-badge"
-                  style={{ backgroundColor: getRatingColor(myRating) }}
-                >
-                  {myRating}
-                </span>
+                <strong>{currentUser === 'andre' ? 'André' : 'Aly'} (You)</strong>
               </div>
-              {myNotes && <div className="modal-notes">{myNotes}</div>}
+              <div className="modal-rating-buttons">
+                {['none', 'no', 'maybe', 'yes'].map(ratingValue => (
+                  <button
+                    key={ratingValue}
+                    className={`modal-rating-btn ${ratingValue} ${myRating === ratingValue ? 'active' : ''}`}
+                    onClick={() => onRatingChange(ratingValue)}
+                  >
+                    {ratingValue}
+                  </button>
+                ))}
+              </div>
+              <textarea
+                className="modal-notes-input"
+                value={localNotes}
+                onChange={handleLocalNotesChange}
+                onFocus={handleLocalNotesFocus}
+                onBlur={handleLocalNotesBlur}
+                placeholder="Add your notes..."
+                rows="3"
+              />
             </div>
+
+            {/* Other User - Read Only */}
             <div className="modal-rating-section">
               <div className="modal-rating-header">
                 <strong>{otherUser === 'andre' ? 'André' : 'Aly'}</strong>
