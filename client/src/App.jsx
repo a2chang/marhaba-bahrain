@@ -9,6 +9,7 @@ function App() {
   const [fabrics, setFabrics] = useState([])
   const [ratings, setRatings] = useState({})
   const [mapping, setMapping] = useState([])
+  const [lastUpdate, setLastUpdate] = useState(null)
   const [filters, setFilters] = useState({
     andre: { none: true, no: true, maybe: true, yes: true },
     aly: { none: true, no: true, maybe: true, yes: true },
@@ -68,6 +69,27 @@ function App() {
     }
 
     loadData()
+
+    // Poll for updates every 5 seconds
+    const pollInterval = setInterval(async () => {
+      try {
+        const ratingsRes = await fetch('/api/ratings')
+        const ratingsData = await ratingsRes.json()
+
+        const ratingsLookup = {}
+        ratingsData.ratings.forEach(rating => {
+          const key = `${rating.identifier_code}-${rating.fabric_number}`
+          ratingsLookup[key] = rating
+        })
+        setRatings(ratingsLookup)
+        setLastUpdate(new Date())
+      } catch (error) {
+        console.error('Error polling ratings:', error)
+      }
+    }, 5000)
+
+    // Cleanup interval on unmount
+    return () => clearInterval(pollInterval)
   }, [])
 
   const handleUserSelect = (user) => {
@@ -151,7 +173,13 @@ function App() {
       </header>
       
       <FilterPanel filters={filters} onFilterChange={setFilters} />
-      
+
+      {lastUpdate && (
+        <div className="update-indicator">
+          Last updated: {lastUpdate.toLocaleTimeString()}
+        </div>
+      )}
+
       <FabricGallery
         fabrics={fabrics}
         ratings={ratings}

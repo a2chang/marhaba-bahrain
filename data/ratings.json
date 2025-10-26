@@ -11,7 +11,30 @@
         "rating": "none",
         "notes": ""
       }
+    },
+    {
+      "identifier_code": "91261J/47",
+      "fabric_number": 1,
+      "andre": {
+        "rating": "none",
+        "notes": "whoa"
+      },
+      "aly": {
+        "rating": "none",
+        "notes": ""
+      }
+    },
+    {
+      "identifier_code": "91261J/47",
+      "fabric_number": 2,
+      "andre": {
+        "rating": "none",
+        "notes": ""
+      },
+      "aly": {
+        "rating": "none",
+        "notes": ""
+      }
     }
   ]
 }
-
