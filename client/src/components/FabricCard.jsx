@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './FabricCard.css'
 
-function FabricCard({ fabric, rating, currentUser, onRatingChange }) {
+function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange }) {
   const otherUser = currentUser === 'andre' ? 'aly' : 'andre'
   
   const [myRating, setMyRating] = useState('none')
@@ -32,6 +32,11 @@ function FabricCard({ fabric, rating, currentUser, onRatingChange }) {
     onRatingChange(fabric.identifier_code, fabric.fabric_number, myRating, myNotes)
   }
 
+  const handleTypeChange = (e) => {
+    const newType = e.target.value
+    onTypeChange(fabric.identifier_code, newType)
+  }
+
   // Use local image if available, otherwise use Dropbox URL
   const imageUrl = `/api/images/${fabric.filename}`
 
@@ -53,7 +58,15 @@ function FabricCard({ fabric, rating, currentUser, onRatingChange }) {
       <div className="fabric-content">
         <div className="fabric-header">
           <h3 className="fabric-code">{fabric.identifier_code}</h3>
-          <span className="fabric-type">{fabric.type}</span>
+          <select
+            className="fabric-type-selector"
+            value={fabric.type}
+            onChange={handleTypeChange}
+          >
+            <option value="unknown">Unknown</option>
+            <option value="suit">Suit</option>
+            <option value="shirt">Shirt</option>
+          </select>
         </div>
 
         <div className="rating-section">

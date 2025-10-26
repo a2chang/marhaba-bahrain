@@ -87,6 +87,30 @@ app.post('/api/ratings', (req, res) => {
     }
 });
 
+// API: Update fabric type
+app.post('/api/update-type', (req, res) => {
+    try {
+        const { identifier_code, type } = req.body;
+
+        // Read existing mapping
+        const mappingData = JSON.parse(fs.readFileSync(MAPPING_FILE, 'utf8'));
+
+        // Find and update the type
+        const image = mappingData.find(img => img.identifier_code === identifier_code);
+        if (image) {
+            image.type = type;
+
+            // Save back to file
+            fs.writeFileSync(MAPPING_FILE, JSON.stringify(mappingData, null, 2));
+            res.json({ success: true, message: 'Type updated successfully' });
+        } else {
+            res.status(404).json({ error: 'Image not found' });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
 // API: Serve images
 app.get('/api/images/:filename', (req, res) => {
     const filename = req.params.filename;

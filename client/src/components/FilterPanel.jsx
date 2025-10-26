@@ -14,6 +14,16 @@ function FilterPanel({ filters, onFilterChange }) {
     })
   }
 
+  const handleTypeToggle = (type) => {
+    onFilterChange({
+      ...filters,
+      types: {
+        ...filters.types,
+        [type]: !filters.types[type]
+      }
+    })
+  }
+
   const handleSelectAll = (user) => {
     onFilterChange({
       ...filters,
@@ -25,6 +35,20 @@ function FilterPanel({ filters, onFilterChange }) {
     onFilterChange({
       ...filters,
       [user]: { none: false, no: false, maybe: false, yes: false }
+    })
+  }
+
+  const handleSelectAllTypes = () => {
+    onFilterChange({
+      ...filters,
+      types: { unknown: true, suit: true, shirt: true }
+    })
+  }
+
+  const handleSelectNoTypes = () => {
+    onFilterChange({
+      ...filters,
+      types: { unknown: false, suit: false, shirt: false }
     })
   }
 
@@ -81,6 +105,28 @@ function FilterPanel({ filters, onFilterChange }) {
                     onChange={() => handleToggle('aly', rating)}
                   />
                   <span className={`rating-label ${rating}`}>{rating}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-user-section filter-type-section">
+            <div className="filter-user-header">
+              <strong>Fabric Type</strong>
+              <div className="filter-actions">
+                <button onClick={handleSelectAllTypes}>All</button>
+                <button onClick={handleSelectNoTypes}>None</button>
+              </div>
+            </div>
+            <div className="filter-checkboxes">
+              {['unknown', 'suit', 'shirt'].map(type => (
+                <label key={type}>
+                  <input
+                    type="checkbox"
+                    checked={filters.types[type]}
+                    onChange={() => handleTypeToggle(type)}
+                  />
+                  <span className="type-label">{type}</span>
                 </label>
               ))}
             </div>

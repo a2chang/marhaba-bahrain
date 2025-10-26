@@ -8,9 +8,11 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [fabrics, setFabrics] = useState([])
   const [ratings, setRatings] = useState({})
+  const [mapping, setMapping] = useState([])
   const [filters, setFilters] = useState({
     andre: { none: true, no: true, maybe: true, yes: true },
-    aly: { none: true, no: true, maybe: true, yes: true }
+    aly: { none: true, no: true, maybe: true, yes: true },
+    types: { unknown: true, suit: true, shirt: true }
   })
   const [loading, setLoading] = useState(true)
 
@@ -28,7 +30,8 @@ function App() {
       try {
         // Load images mapping
         const mappingRes = await fetch('/api/images-mapping')
-        const mapping = await mappingRes.json()
+        const mappingData = await mappingRes.json()
+        setMapping(mappingData)
 
         // Load ratings
         const ratingsRes = await fetch('/api/ratings')
@@ -36,7 +39,7 @@ function App() {
 
         // Create fabric list from mapping
         const fabricList = []
-        mapping.forEach(image => {
+        mappingData.forEach(image => {
           for (let i = 1; i <= image.fabrics; i++) {
             fabricList.push({
               identifier_code: image.identifier_code,
@@ -101,6 +104,34 @@ function App() {
     }
   }
 
+  const handleTypeChange = async (identifierCode, newType) => {
+    // Update local mapping state
+    const updatedMapping = mapping.map(image =>
+      image.identifier_code === identifierCode
+        ? { ...image, type: newType }
+        : image
+    )
+    setMapping(updatedMapping)
+
+    // Update fabrics state
+    setFabrics(prev => prev.map(fabric =>
+      fabric.identifier_code === identifierCode
+        ? { ...fabric, type: newType }
+        : fabric
+    ))
+
+    // Save to backend
+    try {
+      await fetch('/api/update-type', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier_code: identifierCode, type: newType })
+      })
+    } catch (error) {
+      console.error('Error saving type:', error)
+    }
+  }
+
   if (!currentUser) {
     return <UserSelector onSelect={handleUserSelect} />
   }
@@ -127,6 +158,7 @@ function App() {
         currentUser={currentUser}
         filters={filters}
         onRatingChange={handleRatingChange}
+        onTypeChange={handleTypeChange}
       />
     </div>
   )

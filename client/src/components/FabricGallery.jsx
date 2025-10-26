@@ -1,7 +1,7 @@
 import FabricCard from './FabricCard'
 import './FabricGallery.css'
 
-function FabricGallery({ fabrics, ratings, currentUser, filters, onRatingChange }) {
+function FabricGallery({ fabrics, ratings, currentUser, filters, onRatingChange, onTypeChange }) {
   // Filter fabrics based on filter settings
   const filteredFabrics = fabrics.filter(fabric => {
     const key = `${fabric.identifier_code}-${fabric.fabric_number}`
@@ -15,7 +15,10 @@ function FabricGallery({ fabrics, ratings, currentUser, filters, onRatingChange 
     const andreMatch = filters.andre[andreRating]
     const alyMatch = filters.aly[alyRating]
 
-    return andreMatch || alyMatch
+    // Check if type matches the filter
+    const typeMatch = filters.types[fabric.type]
+
+    return (andreMatch || alyMatch) && typeMatch
   })
 
   if (filteredFabrics.length === 0) {
@@ -43,6 +46,7 @@ function FabricGallery({ fabrics, ratings, currentUser, filters, onRatingChange 
               rating={rating}
               currentUser={currentUser}
               onRatingChange={onRatingChange}
+              onTypeChange={onTypeChange}
             />
           )
         })}

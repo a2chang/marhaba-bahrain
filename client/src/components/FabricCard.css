@@ -56,13 +56,26 @@
   color: #333;
 }
 
-.fabric-type {
-  font-size: 12px;
-  padding: 4px 10px;
-  background: #f0f0f0;
-  border-radius: 12px;
-  color: #666;
+.fabric-type-selector {
+  font-size: 13px;
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #333;
+  cursor: pointer;
   text-transform: capitalize;
+  font-weight: 500;
+}
+
+.fabric-type-selector:hover {
+  border-color: #0066cc;
+}
+
+.fabric-type-selector:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
 }
 
 .rating-section {
