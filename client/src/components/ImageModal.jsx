@@ -65,17 +65,18 @@ function ImageModal({
   }
 
   const getImageStyle = () => {
-    const baseStyle = { cursor: 'pointer' }
     if (zoomMode === '2x' && imageDimensions.width > 0) {
       return {
-        ...baseStyle,
+        cursor: 'pointer',
         width: `${imageDimensions.width * 2}px`,
-        height: `${imageDimensions.height * 2}px`,
-        maxWidth: 'none',
-        maxHeight: 'none'
+        height: `${imageDimensions.height * 2}px`
       }
     }
-    return baseStyle
+
+    // For fit and 1x modes, only set cursor - let CSS handle sizing
+    return {
+      cursor: 'pointer'
+    }
   }
 
   const getZoomLabel = () => {
@@ -124,7 +125,7 @@ function ImageModal({
               </button>
             </div>
             <div className={`image-modal-scroll-container ${zoomMode !== 'fit' ? 'scrollable' : ''}`}>
-              <div className="image-wrapper">
+              {zoomMode === 'fit' ? (
                 <img
                   src={imageUrl}
                   alt={`Fabric ${fabricInfo}`}
@@ -133,7 +134,18 @@ function ImageModal({
                   onLoad={handleImageLoad}
                   style={getImageStyle()}
                 />
-              </div>
+              ) : (
+                <div className="image-wrapper">
+                  <img
+                    src={imageUrl}
+                    alt={`Fabric ${fabricInfo}`}
+                    className={getImageClassName()}
+                    onClick={handleImageClick}
+                    onLoad={handleImageLoad}
+                    style={getImageStyle()}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
