@@ -21,18 +21,80 @@
   align-items: center;
 }
 
-.image-modal-content img {
+.image-modal-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.zoom-toggle-btn {
+  background: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+
+.zoom-toggle-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.image-modal-scroll-container {
+  max-width: 90vw;
+  max-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-modal-scroll-container.scrollable {
+  overflow: auto;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Fit to screen mode (default) */
+.image-fit-screen {
   max-width: 100%;
-  max-height: 85vh;
+  max-height: 75vh;
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
+/* Actual size (1:1) mode */
+.image-actual-size {
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 2x zoom mode */
+.image-2x-size {
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  transform: scale(2);
+  transform-origin: center;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  margin: 50%;
+}
+
 .image-modal-close {
-  position: absolute;
-  top: -40px;
-  right: 0;
   background: white;
   border: none;
   border-radius: 50%;
