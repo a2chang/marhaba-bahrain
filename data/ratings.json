@@ -59,6 +59,18 @@
         "rating": "yes",
         "notes": ""
       }
+    },
+    {
+      "identifier_code": "Black collection",
+      "fabric_number": 3,
+      "andre": {
+        "rating": "none",
+        "notes": ""
+      },
+      "aly": {
+        "rating": "yes",
+        "notes": ""
+      }
     }
   ]
 }

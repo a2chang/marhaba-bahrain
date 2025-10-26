@@ -19,6 +19,7 @@ function ImageModal({
 }) {
   const [zoomMode, setZoomMode] = useState('fit') // 'fit', '1x', '2x'
   const [localNotes, setLocalNotes] = useState(myNotes)
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
     setLocalNotes(myNotes)
@@ -55,13 +56,21 @@ function ImageModal({
     return 'image-fit-screen'
   }
 
+  const handleImageLoad = (e) => {
+    const img = e.target
+    setImageDimensions({
+      width: img.naturalWidth,
+      height: img.naturalHeight
+    })
+  }
+
   const getImageStyle = () => {
     const baseStyle = { cursor: 'pointer' }
-    if (zoomMode === '2x') {
+    if (zoomMode === '2x' && imageDimensions.width > 0) {
       return {
         ...baseStyle,
-        width: '200%',
-        height: '200%',
+        width: `${imageDimensions.width * 2}px`,
+        height: `${imageDimensions.height * 2}px`,
         maxWidth: 'none',
         maxHeight: 'none'
       }
@@ -120,6 +129,7 @@ function ImageModal({
                 alt={`Fabric ${fabricInfo}`}
                 className={getImageClassName()}
                 onClick={handleImageClick}
+                onLoad={handleImageLoad}
                 style={getImageStyle()}
               />
             </div>
