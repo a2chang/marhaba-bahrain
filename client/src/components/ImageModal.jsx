@@ -51,8 +51,22 @@ function ImageModal({
 
   const getImageClassName = () => {
     if (zoomMode === '1x') return 'image-actual-size'
-    if (zoomMode === '2x') return 'image-2x-size'
+    if (zoomMode === '2x') return 'image-actual-size' // Use same class, apply inline style
     return 'image-fit-screen'
+  }
+
+  const getImageStyle = () => {
+    const baseStyle = { cursor: 'pointer' }
+    if (zoomMode === '2x') {
+      return {
+        ...baseStyle,
+        width: '200%',
+        height: '200%',
+        maxWidth: 'none',
+        maxHeight: 'none'
+      }
+    }
+    return baseStyle
   }
 
   const getZoomLabel = () => {
@@ -106,7 +120,7 @@ function ImageModal({
                 alt={`Fabric ${fabricInfo}`}
                 className={getImageClassName()}
                 onClick={handleImageClick}
-                style={{ cursor: 'pointer' }}
+                style={getImageStyle()}
               />
             </div>
           </div>

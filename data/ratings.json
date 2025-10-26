@@ -35,6 +35,30 @@
         "rating": "none",
         "notes": ""
       }
+    },
+    {
+      "identifier_code": "91425/47",
+      "fabric_number": 1,
+      "andre": {
+        "rating": "none",
+        "notes": ""
+      },
+      "aly": {
+        "rating": "yes",
+        "notes": ""
+      }
+    },
+    {
+      "identifier_code": "::sudhir-3",
+      "fabric_number": 4,
+      "andre": {
+        "rating": "none",
+        "notes": ""
+      },
+      "aly": {
+        "rating": "yes",
+        "notes": ""
+      }
     }
   ]
 }
