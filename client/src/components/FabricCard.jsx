@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
+import ImageModal from './ImageModal'
 import './FabricCard.css'
 
 function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange, onEditingChange }) {
   const otherUser = currentUser === 'andre' ? 'aly' : 'andre'
   const fabricKey = `${fabric.identifier_code}-${fabric.fabric_number}`
-  
+
   const [myRating, setMyRating] = useState('none')
   const [myNotes, setMyNotes] = useState('')
   const [otherRating, setOtherRating] = useState('none')
   const [otherNotes, setOtherNotes] = useState('')
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     if (rating) {
@@ -46,19 +48,20 @@ function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange,
   const imageUrl = `/api/images/${fabric.filename}`
 
   return (
-    <div className="fabric-card">
-      <div className="fabric-image-container">
-        <img 
-          src={imageUrl}
-          alt={`${fabric.identifier_code} - Fabric ${fabric.fabric_number}`}
-          className="fabric-image"
-          onError={(e) => {
-            // Fallback to Dropbox URL if local image fails
-            e.target.src = fabric.dropbox_url
-          }}
-        />
-        <div className="fabric-badge">#{fabric.fabric_number}</div>
-      </div>
+    <>
+      <div className="fabric-card">
+        <div className="fabric-image-container" onClick={() => setShowModal(true)}>
+          <img
+            src={imageUrl}
+            alt={`${fabric.identifier_code} - Fabric ${fabric.fabric_number}`}
+            className="fabric-image"
+            onError={(e) => {
+              // Fallback to Dropbox URL if local image fails
+              e.target.src = fabric.dropbox_url
+            }}
+          />
+          <div className="fabric-badge">#{fabric.fabric_number}</div>
+        </div>
 
       <div className="fabric-content">
         <div className="fabric-header">
@@ -113,6 +116,15 @@ function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange,
         )}
       </div>
     </div>
+
+    {showModal && (
+      <ImageModal
+        imageUrl={imageUrl}
+        fabricInfo={`${fabric.identifier_code} - Fabric #${fabric.fabric_number}`}
+        onClose={() => setShowModal(false)}
+      />
+    )}
+  </>
   )
 }
 
