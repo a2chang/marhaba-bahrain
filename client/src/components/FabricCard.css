@@ -1,0 +1,214 @@
+.fabric-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.fabric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.fabric-image-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.fabric-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fabric-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.fabric-content {
+  padding: 15px;
+}
+
+.fabric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.fabric-code {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.fabric-type {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.rating-section {
+  margin-bottom: 15px;
+}
+
+.section-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+
+.rating-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.rating-btn {
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  transition: all 0.2s;
+}
+
+.rating-btn.none {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.rating-btn.none.active {
+  background: #e0e0e0;
+  border-color: #999;
+}
+
+.rating-btn.no {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.rating-btn.no.active {
+  background: #ef5350;
+  color: white;
+  border-color: #c62828;
+}
+
+.rating-btn.maybe {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.rating-btn.maybe.active {
+  background: #ff9800;
+  color: white;
+  border-color: #ef6c00;
+}
+
+.rating-btn.yes {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.rating-btn.yes.active {
+  background: #4caf50;
+  color: white;
+  border-color: #2e7d32;
+}
+
+.rating-btn:hover {
+  transform: scale(1.05);
+}
+
+.notes-section {
+  margin-bottom: 15px;
+}
+
+.notes-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.notes-input:focus {
+  outline: none;
+  border-color: #0066cc;
+}
+
+.other-user-section {
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.other-rating {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rating-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  width: fit-content;
+}
+
+.rating-badge.none {
+  background: #e0e0e0;
+  color: #666;
+}
+
+.rating-badge.no {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.rating-badge.maybe {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.rating-badge.yes {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.other-notes {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+  padding: 8px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+

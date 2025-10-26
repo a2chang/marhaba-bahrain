@@ -1,0 +1,135 @@
+.filter-panel {
+  background: white;
+  padding: 20px;
+  margin: 0 20px 20px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filter-header h3 {
+  font-size: 18px;
+  color: #333;
+}
+
+.toggle-advanced {
+  padding: 6px 12px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toggle-advanced:hover {
+  background: #e0e0e0;
+}
+
+.simple-filters {
+  padding: 10px 0;
+}
+
+.filter-description {
+  color: #666;
+  font-size: 14px;
+}
+
+.advanced-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.filter-user-section {
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.filter-user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.filter-user-header strong {
+  font-size: 16px;
+  color: #333;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-actions button {
+  padding: 4px 10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.filter-actions button:hover {
+  background: #f0f0f0;
+}
+
+.filter-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.filter-checkboxes input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.rating-label {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.rating-label.none {
+  background: #e0e0e0;
+  color: #666;
+}
+
+.rating-label.no {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.rating-label.maybe {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.rating-label.yes {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+@media (max-width: 768px) {
+  .advanced-filters {
+    grid-template-columns: 1fr;
+  }
+}
+

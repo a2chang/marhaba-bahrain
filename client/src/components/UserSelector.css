@@ -1,0 +1,64 @@
+.user-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.user-selector-modal {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 400px;
+}
+
+.user-selector-modal h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.user-selector-modal p {
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.user-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.user-button {
+  padding: 15px 40px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: capitalize;
+}
+
+.user-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.user-button.andre {
+  background: #0066cc;
+  color: white;
+}
+
+.user-button.aly {
+  background: #00aa66;
+  color: white;
+}
+
