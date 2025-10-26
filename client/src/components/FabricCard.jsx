@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import './FabricCard.css'
 
-function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange }) {
+function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange, onEditingChange }) {
   const otherUser = currentUser === 'andre' ? 'aly' : 'andre'
+  const fabricKey = `${fabric.identifier_code}-${fabric.fabric_number}`
   
   const [myRating, setMyRating] = useState('none')
   const [myNotes, setMyNotes] = useState('')
@@ -24,11 +25,15 @@ function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange 
   }
 
   const handleNotesChange = (e) => {
-    const newNotes = e.target.value
-    setMyNotes(newNotes)
+    setMyNotes(e.target.value)
+  }
+
+  const handleNotesFocus = () => {
+    onEditingChange(fabricKey)
   }
 
   const handleNotesBlur = () => {
+    onEditingChange(null)
     onRatingChange(fabric.identifier_code, fabric.fabric_number, myRating, myNotes)
   }
 
@@ -90,6 +95,7 @@ function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange 
             className="notes-input"
             value={myNotes}
             onChange={handleNotesChange}
+            onFocus={handleNotesFocus}
             onBlur={handleNotesBlur}
             placeholder="Add notes..."
             rows="2"

@@ -10,6 +10,7 @@ function App() {
   const [ratings, setRatings] = useState({})
   const [mapping, setMapping] = useState([])
   const [lastUpdate, setLastUpdate] = useState(null)
+  const [editingField, setEditingField] = useState(null) // Track which field is being edited
   const [filters, setFilters] = useState({
     andre: { none: true, no: true, maybe: true, yes: true },
     aly: { none: true, no: true, maybe: true, yes: true },
@@ -76,12 +77,24 @@ function App() {
         const ratingsRes = await fetch('/api/ratings')
         const ratingsData = await ratingsRes.json()
 
-        const ratingsLookup = {}
-        ratingsData.ratings.forEach(rating => {
-          const key = `${rating.identifier_code}-${rating.fabric_number}`
-          ratingsLookup[key] = rating
+        setRatings(prevRatings => {
+          const ratingsLookup = {}
+          ratingsData.ratings.forEach(rating => {
+            const key = `${rating.identifier_code}-${rating.fabric_number}`
+
+            // If this fabric is being edited, preserve the current user's notes
+            if (editingField === key) {
+              ratingsLookup[key] = {
+                ...rating,
+                [currentUser]: prevRatings[key]?.[currentUser] || rating[currentUser]
+              }
+            } else {
+              ratingsLookup[key] = rating
+            }
+          })
+          return ratingsLookup
         })
-        setRatings(ratingsLookup)
+
         setLastUpdate(new Date())
       } catch (error) {
         console.error('Error polling ratings:', error)
@@ -187,6 +200,7 @@ function App() {
         filters={filters}
         onRatingChange={handleRatingChange}
         onTypeChange={handleTypeChange}
+        onEditingChange={setEditingField}
       />
     </div>
   )
