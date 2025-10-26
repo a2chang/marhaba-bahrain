@@ -20,8 +20,17 @@
   - we need a mapping file to map the identifier-code to the image file name
   - users should never see the file name, just the identifier-code
 
+- each image has multiple fabrics (mostly numbered 1-6, but not always)
+- each fabric can have a type - default to unknown, but can also be suit or shirt
+  - it should be sufficient to assign type to each image as all fabrics in one image should be the same type
+
 - a simple react app, running at :3500 is sufficient (unless you think otherwise)
 - the view should allow a filter by ratings
   - inclusions would be OR across users
   - exclusions would be AND across users
   - an advanced filter would allow per user rating selections (user/rating matrix and checkboxes for each)
+
+
+## Notes
+- photos are in dropbox here:
+  https://www.dropbox.com/scl/fo/oh849kgbfh32dttgeh22s/AH5ycOtVaP-O9to6M7tq58Y?rlkey=7w5oet0ra5i2vfnlpup0uh2ps&st=1vfu3s7a&dl=0
