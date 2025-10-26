@@ -124,14 +124,16 @@ function ImageModal({
               </button>
             </div>
             <div className={`image-modal-scroll-container ${zoomMode !== 'fit' ? 'scrollable' : ''}`}>
-              <img
-                src={imageUrl}
-                alt={`Fabric ${fabricInfo}`}
-                className={getImageClassName()}
-                onClick={handleImageClick}
-                onLoad={handleImageLoad}
-                style={getImageStyle()}
-              />
+              <div className="image-wrapper">
+                <img
+                  src={imageUrl}
+                  alt={`Fabric ${fabricInfo}`}
+                  className={getImageClassName()}
+                  onClick={handleImageClick}
+                  onLoad={handleImageLoad}
+                  style={getImageStyle()}
+                />
+              </div>
             </div>
           </div>
 
