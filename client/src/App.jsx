@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import UserSelector from './components/UserSelector'
 import FabricGallery from './components/FabricGallery'
 import FilterPanel from './components/FilterPanel'
@@ -10,7 +10,7 @@ function App() {
   const [ratings, setRatings] = useState({})
   const [mapping, setMapping] = useState([])
   const [lastUpdate, setLastUpdate] = useState(null)
-  const [editingField, setEditingField] = useState(null) // Track which field is being edited
+  const editingFieldRef = useRef(null) // Track which field is being edited using ref
   const [filters, setFilters] = useState({
     andre: { none: true, no: true, maybe: true, yes: true },
     aly: { none: true, no: true, maybe: true, yes: true },
@@ -79,15 +79,15 @@ function App() {
 
         setRatings(prevRatings => {
           const ratingsLookup = {}
+          const editingKey = editingFieldRef.current
+
           ratingsData.ratings.forEach(rating => {
             const key = `${rating.identifier_code}-${rating.fabric_number}`
 
-            // If this fabric is being edited, preserve the current user's notes
-            if (editingField === key) {
-              ratingsLookup[key] = {
-                ...rating,
-                [currentUser]: prevRatings[key]?.[currentUser] || rating[currentUser]
-              }
+            // If this fabric is being edited, preserve the current user's data
+            if (editingKey === key && prevRatings[key]) {
+              // Keep the previous rating data for the fabric being edited
+              ratingsLookup[key] = prevRatings[key]
             } else {
               ratingsLookup[key] = rating
             }
@@ -167,6 +167,10 @@ function App() {
     }
   }
 
+  const handleEditingChange = (fabricKey) => {
+    editingFieldRef.current = fabricKey
+  }
+
   if (!currentUser) {
     return <UserSelector onSelect={handleUserSelect} />
   }
@@ -200,7 +204,7 @@ function App() {
         filters={filters}
         onRatingChange={handleRatingChange}
         onTypeChange={handleTypeChange}
-        onEditingChange={setEditingField}
+        onEditingChange={handleEditingChange}
       />
     </div>
   )
