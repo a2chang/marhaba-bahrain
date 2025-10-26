@@ -121,6 +121,12 @@ function FabricCard({ fabric, rating, currentUser, onRatingChange, onTypeChange,
       <ImageModal
         imageUrl={imageUrl}
         fabricInfo={`${fabric.identifier_code} - Fabric #${fabric.fabric_number}`}
+        currentUser={currentUser}
+        myRating={myRating}
+        myNotes={myNotes}
+        otherUser={otherUser}
+        otherRating={otherRating}
+        otherNotes={otherNotes}
         onClose={() => setShowModal(false)}
       />
     )}
