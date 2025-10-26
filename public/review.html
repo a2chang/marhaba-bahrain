@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabric Codes Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            background: #f0f0f0;
+        }
+        
+        .card-content {
+            padding: 15px;
+        }
+        
+        .card-filename {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        
+        .code-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .metadata-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .metadata-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .metadata-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .metadata-input {
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .metadata-input.modified {
+            border-color: #ff9800;
+            background-color: #fff3e0;
+        }
+        
+        .code-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background: #f9fff9;
+        }
+        
+        .code-input.modified {
+            border-color: #ff9800;
+            background: #fff9f0;
+        }
+        
+        .save-btn {
+            padding: 8px 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        
+        .save-btn:hover {
+            background: #45a049;
+        }
+        
+        .save-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .export-btn {
+            padding: 10px 20px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .export-btn:hover {
+            background: #0b7dda;
+        }
+        
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧵 Fabric Codes Review</h1>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-label">Total Fabrics</div>
+                <div class="stat-value" id="totalCount">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Modified</div>
+                <div class="stat-value" id="modifiedCount">0</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="export-btn" onclick="exportChanges()">💾 Save All Changes</button>
+            <div class="status" id="status"></div>
+        </div>
+        
+        <div class="grid" id="grid"></div>
+    </div>
+
+    <script>
+        let mappingData = [];
+        let modifications = {};
+
+        async function loadMapping() {
+            try {
+                // Try to load from the data directory
+                const response = await fetch('/data/images-mapping.json');
+                if (!response.ok) throw new Error('Not found');
+                mappingData = await response.json();
+                renderGrid();
+                document.getElementById('totalCount').textContent = mappingData.length;
+            } catch (error) {
+                showStatus('Error loading mapping file. Make sure you\'re running this from the project root.', 'error');
+                console.error(error);
+            }
+        }
+        
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            
+            mappingData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                const currentCode = modifications[index] !== undefined ? modifications[index] : item.identifier_code;
+                const isModified = modifications[index] !== undefined;
+                
+                const currentFabrics = modifications[index] !== undefined && modifications[index].fabrics !== undefined ? modifications[index].fabrics : item.fabrics;
+                const currentType = modifications[index] !== undefined && modifications[index].type !== undefined ? modifications[index].type : item.type;
+                const isFabricsModified = modifications[index] !== undefined && modifications[index].fabrics !== undefined && modifications[index].fabrics !== item.fabrics;
+                const isTypeModified = modifications[index] !== undefined && modifications[index].type !== undefined && modifications[index].type !== item.type;
+
+                card.innerHTML = `
+                    <img src="/data/images/${item.filename}" alt="${item.filename}" class="card-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22300%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-family=%22Arial%22%3EImage not available%3C/text%3E%3C/svg%3E'">
+                    <div class="card-content">
+                        <div class="card-filename">${item.filename}</div>
+                        <div class="code-input-group">
+                            <input
+                                type="text"
+                                class="code-input ${isModified ? 'modified' : ''}"
+                                value="${currentCode}"
+                                data-index="${index}"
+                                data-original="${item.identifier_code}"
+                                onchange="updateCode(this)"
+                                oninput="markModified(this)"
+                            >
+                        </div>
+                        <div class="metadata-group">
+                            <div class="metadata-field">
+                                <label class="metadata-label">Fabrics</label>
+                                <input
+                                    type="number"
+                                    class="metadata-input ${isFabricsModified ? 'modified' : ''}"
+                                    value="${currentFabrics}"
+                                    min="1"
+                                    data-index="${index}"
+                                    data-field="fabrics"
+                                    data-original="${item.fabrics}"
+                                    onchange="updateMetadata(this)"
+                                    oninput="markMetadataModified(this)"
+                                >
+                            </div>
+                            <div class="metadata-field">
+                                <label class="metadata-label">Type</label>
+                                <input
+                                    type="text"
+                                    class="metadata-input ${isTypeModified ? 'modified' : ''}"
+                                    value="${currentType}"
+                                    data-index="${index}"
+                                    data-field="type"
+                                    data-original="${item.type}"
+                                    onchange="updateMetadata(this)"
+                                    oninput="markMetadataModified(this)"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        function markModified(input) {
+            const index = input.dataset.index;
+            const original = input.dataset.original;
+
+            if (!modifications[index]) {
+                modifications[index] = {};
+            }
+
+            if (input.value !== original) {
+                input.classList.add('modified');
+                modifications[index].identifier_code = input.value;
+            } else {
+                input.classList.remove('modified');
+                delete modifications[index].identifier_code;
+                if (Object.keys(modifications[index]).length === 0) {
+                    delete modifications[index];
+                }
+            }
+
+            document.getElementById('modifiedCount').textContent = Object.keys(modifications).length;
+        }
+        
+        function updateCode(input) {
+            markModified(input);
+        }
+
+        function markMetadataModified(input) {
+            const index = input.dataset.index;
+            const field = input.dataset.field;
+            const original = input.dataset.original;
+
+            if (!modifications[index]) {
+                modifications[index] = {};
+            }
+
+            if (input.value !== original) {
+                input.classList.add('modified');
+                modifications[index][field] = input.value === '' ? input.value : (field === 'fabrics' ? parseInt(input.value) : input.value);
+            } else {
+                input.classList.remove('modified');
+                delete modifications[index][field];
+                if (Object.keys(modifications[index]).length === 0) {
+                    delete modifications[index];
+                }
+            }
+
+            document.getElementById('modifiedCount').textContent = Object.keys(modifications).length;
+        }
+
+        function updateMetadata(input) {
+            markMetadataModified(input);
+        }
+
+        async function exportChanges() {
+            if (Object.keys(modifications).length === 0) {
+                showStatus('No changes to save', 'error');
+                return;
+            }
+
+            // Apply modifications to mappingData
+            Object.keys(modifications).forEach(index => {
+                const mod = modifications[index];
+                if (typeof mod === 'string') {
+                    // Old format: just the identifier_code
+                    mappingData[index].identifier_code = mod;
+                } else {
+                    // New format: object with multiple fields
+                    if (mod.identifier_code !== undefined) {
+                        mappingData[index].identifier_code = mod.identifier_code;
+                    }
+                    if (mod.fabrics !== undefined) {
+                        mappingData[index].fabrics = mod.fabrics;
+                    }
+                    if (mod.type !== undefined) {
+                        mappingData[index].type = mod.type;
+                    }
+                }
+            });
+
+            try {
+                // Try to save via API
+                const response = await fetch('/api/save-mapping', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(mappingData)
+                });
+
+                if (response.ok) {
+                    showStatus(`✅ Saved ${Object.keys(modifications).length} changes!`, 'success');
+                    modifications = {};
+                    document.getElementById('modifiedCount').textContent = '0';
+                    renderGrid();
+                } else {
+                    throw new Error('Save failed');
+                }
+            } catch (error) {
+                // Fallback: download as JSON file
+                const dataStr = JSON.stringify(mappingData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'images-mapping.json';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                showStatus(`✅ Downloaded updated mapping with ${Object.keys(modifications).length} changes!`, 'success');
+                modifications = {};
+                document.getElementById('modifiedCount').textContent = '0';
+                renderGrid();
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            setTimeout(() => {
+                status.className = 'status';
+            }, 3000);
+        }
+        
+        // Load mapping on page load
+        loadMapping();
+    </script>
+</body>
+</html>
+

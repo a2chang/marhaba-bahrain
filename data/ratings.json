@@ -1,0 +1,17 @@
+{
+  "ratings": [
+    {
+      "identifier_code": "FABRIC_001",
+      "fabric_number": 1,
+      "andre": {
+        "rating": "none",
+        "notes": ""
+      },
+      "aly": {
+        "rating": "none",
+        "notes": ""
+      }
+    }
+  ]
+}
+

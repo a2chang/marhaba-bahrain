@@ -4,7 +4,7 @@ const path = require('path');
 const url = require('url');
 
 const PORT = 8001;
-const DATA_DIR = path.join(__dirname, 'data');
+const DATA_DIR = path.join(__dirname, '..', 'data');
 const IMAGES_DIR = path.join(DATA_DIR, 'images');
 const MAPPING_FILE = path.join(DATA_DIR, 'images-mapping.json');
 
@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
 
     // Serve fabric review page
     if (pathname === '/fabric-review' || pathname === '/fabric-review.html') {
-        const reviewPath = path.join(__dirname, 'review.html');
+        const reviewPath = path.join(__dirname, '..', 'public', 'review.html');
         fs.readFile(reviewPath, 'utf8', (err, data) => {
             if (err) {
                 res.writeHead(404, { 'Content-Type': 'text/plain' });
