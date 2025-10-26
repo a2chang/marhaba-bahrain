@@ -90,26 +90,33 @@ function ImageModal({
   return (
     <div className="image-modal-backdrop" onClick={handleBackdropClick}>
       <div className="image-modal-content">
-        <div className="image-modal-controls">
-          <button className="zoom-toggle-btn" onClick={cycleZoom}>
-            {getZoomLabel()}
-          </button>
-          <button className="image-modal-close" onClick={onClose}>×</button>
-        </div>
-        <div className={`image-modal-scroll-container ${zoomMode !== 'fit' ? 'scrollable' : ''}`}>
-          <img
-            src={imageUrl}
-            alt={`Fabric ${fabricInfo}`}
-            className={getImageClassName()}
-            onClick={handleImageClick}
-            style={{ cursor: 'pointer' }}
-          />
-        </div>
-        <div className="image-modal-details">
-          <div className="image-modal-info">
-            {fabricInfo}
+        <button className="image-modal-close" onClick={onClose}>×</button>
+
+        <div className="image-modal-layout">
+          {/* Left side - Image */}
+          <div className="image-modal-left">
+            <div className="image-modal-controls">
+              <button className="zoom-toggle-btn" onClick={cycleZoom}>
+                {getZoomLabel()}
+              </button>
+            </div>
+            <div className={`image-modal-scroll-container ${zoomMode !== 'fit' ? 'scrollable' : ''}`}>
+              <img
+                src={imageUrl}
+                alt={`Fabric ${fabricInfo}`}
+                className={getImageClassName()}
+                onClick={handleImageClick}
+                style={{ cursor: 'pointer' }}
+              />
+            </div>
           </div>
-          <div className="image-modal-ratings">
+
+          {/* Right side - Ratings & Notes */}
+          <div className="image-modal-right">
+            <div className="image-modal-info">
+              {fabricInfo}
+            </div>
+
             {/* Current User - Editable */}
             <div className="modal-rating-section editable">
               <div className="modal-rating-header">
@@ -133,7 +140,7 @@ function ImageModal({
                 onFocus={handleLocalNotesFocus}
                 onBlur={handleLocalNotesBlur}
                 placeholder="Add your notes..."
-                rows="3"
+                rows="5"
               />
             </div>
 
@@ -148,7 +155,11 @@ function ImageModal({
                   {otherRating}
                 </span>
               </div>
-              {otherNotes && <div className="modal-notes">{otherNotes}</div>}
+              {otherNotes ? (
+                <div className="modal-notes">{otherNotes}</div>
+              ) : (
+                <div className="modal-notes empty">No notes</div>
+              )}
             </div>
           </div>
         </div>
